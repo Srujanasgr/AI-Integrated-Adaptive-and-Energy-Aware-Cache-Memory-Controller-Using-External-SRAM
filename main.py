@@ -1,16 +1,18 @@
-# main.py
+from core.policies import lru, fifo, lfu
 
-from simulator.runner import run_all
-
-# ===== INPUT =====
+# Input
 requests = list(map(int, input("Enter requests: ").split()))
 cache_size = int(input("Enter cache size: "))
 
-# ===== RUN =====
-results = run_all(requests, cache_size)
+# Run
+lru_hits, _ = lru(requests, cache_size)
+fifo_hits, _ = fifo(requests, cache_size)
+lfu_hits, _ = lfu(requests, cache_size)
 
-# ===== OUTPUT =====
-print("\n===== RESULTS =====")
+total = len(requests)
 
-for policy, rate in results.items():
-    print(f"{policy} Hit Rate: {rate}")
+# Output
+print("\nResults:")
+print("LRU Hit Rate:", lru_hits / total)
+print("FIFO Hit Rate:", fifo_hits / total)
+print("LFU Hit Rate:", lfu_hits / total)
