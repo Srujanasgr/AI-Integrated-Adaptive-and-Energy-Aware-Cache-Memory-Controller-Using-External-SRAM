@@ -1,18 +1,24 @@
-from core.policies import lru, fifo, lfu
+#phase1
+#phase 2 updated
+#pase 4 updated
+# main.py
+from simulator.runner import run_all
+from simulator.workloads import random_workload
+# GENERATE WORKLOAD
+requests = random_workload(100)
 
-# Input
-requests = list(map(int, input("Enter requests: ").split()))
-cache_size = int(input("Enter cache size: "))
+#CACHE SIZE 
+cache_size = 5
+#RUN SIMULATION 
+results = run_all(requests, cache_size)
+#OUTPUT
+print("\n===== RESULTS =====")
 
-# Run
-lru_hits, _ = lru(requests, cache_size)
-fifo_hits, _ = fifo(requests, cache_size)
-lfu_hits, _ = lfu(requests, cache_size)
+for policy, metrics in results.items():
 
-total = len(requests)
+    print(f"\n{policy}")
 
-# Output
-print("\nResults:")
-print("LRU Hit Rate:", lru_hits / total)
-print("FIFO Hit Rate:", fifo_hits / total)
-print("LFU Hit Rate:", lfu_hits / total)
+    print("Hit Rate:", metrics["hit_rate"])
+    print("Miss Rate:", metrics["miss_rate"])
+    print("Energy:", metrics["energy"])
+    print("Latency:", metrics["latency"])
