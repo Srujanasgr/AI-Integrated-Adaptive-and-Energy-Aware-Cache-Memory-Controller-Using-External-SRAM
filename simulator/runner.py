@@ -1,8 +1,10 @@
 # simulator/runner.py
 #phase2
+#phase 3 upadted code
 from core.policies import lru, fifo, lfu, lru_optimized
 
 
+# Strategy Pattern
 POLICIES = {
     "LRU": lru,
     "FIFO": fifo,
@@ -12,31 +14,35 @@ POLICIES = {
 
 
 def run_policy(policy_name, requests, cache_size):
+
     if policy_name not in POLICIES:
-        raise ValueError("Invalid policy")
+        raise ValueError("Invalid Policy")
 
     func = POLICIES[policy_name]
+
     hits, misses = func(requests, cache_size)
 
     total = len(requests)
-    hit_rate = hits / total
-    miss_rate = misses / total
 
     return {
         "hits": hits,
         "misses": misses,
-        "hit_rate": hit_rate,
-        "miss_rate": miss_rate
+        "hit_rate": hits / total,
+        "miss_rate": misses / total
     }
 
 
 def run_all(requests, cache_size):
+
     results = {}
 
     for name, func in POLICIES.items():
-        hits, misses = func(requests, cache_size)
-        total = len(requests)
 
-        results[name] = hits / total
+        hits, misses = func(requests, cache_size)
+
+        results[name] = {
+            "hit_rate": hits / len(requests),
+            "miss_rate": misses / len(requests)
+        }
 
     return results
